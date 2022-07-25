@@ -10,4 +10,15 @@ class CitiesServices {
       throw Exception(e.toString());
     }
   }
+
+  static Future<List<String>> getCounties(String cityName) async {
+    try {
+      var response = await NetworkClient.instance!.dio
+          .get('https://denizhanyigit.com/city?requestType=getCountyForCity&cityName=' + cityName);
+      List<String> responseList = response.data['counties'].cast<String>();
+      return responseList;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

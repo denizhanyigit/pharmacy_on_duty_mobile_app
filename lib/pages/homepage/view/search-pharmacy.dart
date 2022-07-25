@@ -25,13 +25,11 @@ class _SearchPharmacyState extends State<SearchPharmacy> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
               padding: EdgeInsets.all(4.0),
               child: Text(
-                'Şehir',
+                'İl Seçiniz',
                 style: TextStyle(
                   fontSize: 18,
                 ),
@@ -61,6 +59,48 @@ class _SearchPharmacyState extends State<SearchPharmacy> {
                         _viewModel.uptadeCityValue(newValue);
                       },
                       items: _viewModel.cityListValue.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Text(
+                'İlçe Seçiniz',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  border: Border.all(color: const Color.fromARGB(85, 24, 23, 23)),
+                  borderRadius: BorderRadius.circular(15)),
+              child: DropdownButtonHideUnderline(
+                child: Observer(builder: (_) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: DropdownButton<String>(
+                      hint: Text(_viewModel.countyValue),
+                      value: _viewModel.countyValue,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                      onChanged: (String? newValue) {
+                        _viewModel.updateCountyValue(newValue);
+                      },
+                      items: _viewModel.countyListValue.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
