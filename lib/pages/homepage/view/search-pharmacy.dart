@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:pharmacy_on_duty/core/widgets/button_widget.dart';
 import 'package:pharmacy_on_duty/pages/homepage/viewmodel/homepage_viewmodel.dart';
+import 'package:pharmacy_on_duty/pages/pharmacylistpage/view/pharmacy_list.dart';
 import '../../../core/widgets/appbar_widget.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -56,6 +58,9 @@ class _SearchPharmacyState extends State<SearchPharmacy> {
                         color: Colors.deepPurpleAccent,
                       ),
                       onChanged: (String? newValue) {
+                        setState(() {
+                          _viewModel.listButtonVisible = true;
+                        });
                         _viewModel.uptadeCityValue(newValue);
                       },
                       items: _viewModel.cityListValue.map<DropdownMenuItem<String>>((String value) {
@@ -109,6 +114,33 @@ class _SearchPharmacyState extends State<SearchPharmacy> {
                     ),
                   );
                 }),
+              ),
+            ),
+            const SizedBox(height: 50),
+            Visibility(
+              visible: _viewModel.listButtonVisible,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: Observer(builder: (_) {
+                    return ButtonWigdet(
+                        icons: Icons.list,
+                        color: const Color.fromARGB(255, 230, 42, 42),
+                        onPressed: () async {
+                          _viewModel.pharmacies =
+                              await _viewModel.getPharmacies(_viewModel.cityValue, _viewModel.countyValue);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => PharmacyList(pharmacies: _viewModel.pharmacies)));
+                        },
+                        title: 'LİSTELE');
+                  }),
+                ),
               ),
             ),
           ],
